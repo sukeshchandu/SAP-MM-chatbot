@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat bot</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .chat-container { width: 100%; max-width: 600px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; height: 80vh; }
+        .chat-header { background: #003366; color: white; padding: 15px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-weight: bold; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; border-bottom: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
+        .message { padding: 10px 14px; border-radius: 6px; max-width: 80%; line-height: 1.4; }
+        .user { background: #e1f5fe; align-self: flex-end; color: #0277bd; }
+        .ai { background: #f5f5f5; align-self: flex-start; color: #333; border: 1px solid #e0e0e0; }
+        .chat-input-area { padding: 15px; display: flex; gap: 10px; }
+        input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        button { background: #003366; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #002244; }
+        .typing-indicator {
+            font-style: italic;
+            color: #6b7280;
+            background: transparent;
+            border: none;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">chat bot assistant</div>
+    <div class="chat-messages" id="chat-messages">
+        <div class="message ai">Welcome. I am your SAP MM technical partner. Ask me anything regarding the P2P cycle, SPRO configurations, T-codes, or vendor determination logic.</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text" id="user-input" placeholder="Ask about SPRO paths, T-codes, P2P..." onkeydown="if(event.key === 'Enter') sendMessage()">
+        <button onclick=sendMessage()>Send</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
