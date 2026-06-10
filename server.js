@@ -14,12 +14,14 @@ app.use(express.static('public'));
 
 let pool;
 if (process.env.DATABASE_URL){
+    console.log("CLOUD MODE")
     pool = new Pool ({
         connectionString: process.env.DATABASE_URL,
         ssl:{rejectUnauthorized: false}
     });
 
 }else {
+    console.log("LOCAL MODE")
     pool = new Pool ({
         user: process.env.DB_USER,
         host: process.env.DB_HOST || 'localhost',
