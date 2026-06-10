@@ -12,14 +12,32 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static('public'));
 
-const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-});
+let pool;
+if (process.env.DATABASE_URL){
+    pool = new Pool ({
+        connectionString: process.env.DATABASE_URL,
+        ssl:{rejectUnauthorized: false}
+    });
+
+}else {
+    pool = new Pool ({
+        user: process.env.DB_USER,
+        host: process.env.DB_HOST || 'localhost',
+        database: process.env.DB_NAME,
+        password: process.env.DB_PASSWORD,
+        port: process.env.DB_PORT || 5432,
+    });
+}
+pool.query(`
+    CREATE TABLE IF NOT EXISTS chat_history (
+      id SERIAL PRIMARY KEY,
+      session_id VARCHAR(255) NOT NULL,
+      role VARCHAR(50) NOT NULL,
+      content TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_session_id ON chat_history(session_id);
+    `).then(() => console.log("cloud db is verified")).catch(err => console.error("DB setup error:", error));
 
 const model = new ChatGoogleGenerativeAI({
     model: "gemini-2.5-flash",
